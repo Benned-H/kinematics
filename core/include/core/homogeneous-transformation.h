@@ -42,7 +42,7 @@ class HomogeneousTransformation{
       @returns      corresponding homogeneous transformation
       @throws       no expected throws
     */
-    static HomogeneousTransformation fromDH( const double& a, const double& alpha, const double& d, const double& theta ); 
+    static HomogeneousTransformation fromDH( const double a, const double alpha, const double d, const double theta ); 
 
     /**
       Parameter constructor for the HomogeneousTransformation class

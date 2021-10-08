@@ -13,7 +13,8 @@ class Link{
 
     /**
       A struct representing the DH parameters for a link
-    
+      See Fig. 2.16 in Siciliano Chapter 2.8.2
+
       a - Distance from Oi' to Oi
       alpha - Angle from z(i-1) to zi about xi.
       d - Coordinate of Oi' along z(i-1)

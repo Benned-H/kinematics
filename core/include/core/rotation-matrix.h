@@ -140,7 +140,7 @@ class RotationMatrix{
     }
 
   protected:
-    // 3x3 matrix with columns representing the x-axis, y-axis, and z-axis of the rotated frame w.r.t. the previous frame
+    /** 3x3 matrix with columns representing the x-axis, y-axis, and z-axis of the rotated frame w.r.t. the previous frame */
     Eigen::Matrix3d R;
   
   private:

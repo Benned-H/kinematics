@@ -14,7 +14,7 @@ Vector3D::Vector3D( void ) : v( 3, 0.0 ){}
 //
 // Parameter constructor from (x,y,z) for the Vector3D class
 //
-Vector3D::Vector3D( const double& x, const double& y, const double& z ) : v(){
+Vector3D::Vector3D( const double x, const double y, const double z ) : v(){
   v.push_back( x );
   v.push_back( y );
   v.push_back( z );
@@ -39,12 +39,11 @@ Eigen::Vector3d Vector3D::to_Vector3d( void )const{
 //
 // Vector3D set function
 //
-void Vector3D::set( const double& x, const double& y, const double& z ){
+void Vector3D::set( const double x, const double y, const double z ){
   v[0] = x;
   v[1] = y;
   v[2] = z;
 }
-
 
 //
 // Vector3D in-place element-wise addition

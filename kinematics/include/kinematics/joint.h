@@ -24,7 +24,7 @@ class Joint{
       @returns      none
       @throws       no expected throws
     */
-    Joint( const double& valueArg, const JointType& typeArg );
+    Joint( const double valueArg, const JointType typeArg );
 
     /** Stores the current joint variable value of the Joint */
     double value;

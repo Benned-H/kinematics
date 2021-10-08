@@ -8,6 +8,6 @@
 //
 // Default parameter constructor for the Joint class
 //
-Joint::Joint( const double& valueArg, const JointType& typeArg ) : value( valueArg ), type( typeArg ){
+Joint::Joint( const double valueArg, const JointType typeArg ) : value( valueArg ), type( typeArg ){
 
 }

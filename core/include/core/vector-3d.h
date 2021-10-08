@@ -30,7 +30,7 @@ class Vector3D{
       @returns      none
       @throws       no expected throws
     */
-    Vector3D( const double& x, const double& y, const double& z );
+    Vector3D( const double x, const double y, const double z );
     
     /**
       Parameter constructor from Eigen::Vector3d for the Vector3D class
@@ -66,7 +66,7 @@ class Vector3D{
       @returns      none
       @throws       no expected throws
     */
-    void set( const double& x, const double& y, const double& z );
+    void set( const double x, const double y, const double z );
 
     /**
       Vector3D in-place element-wise addition

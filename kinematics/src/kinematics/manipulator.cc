@@ -25,7 +25,7 @@ void Manipulator::update( void ){
   if( links.empty() ) return;
   
   // Update the transformation per link
-  for ( Link& link : links ){
+  for( Link& link : links ){
     link.update();
   }
 

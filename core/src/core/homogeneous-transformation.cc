@@ -17,7 +17,7 @@ HomogeneousTransformation HomogeneousTransformation::identity( void ){
 //
 // DH parameter constructor for the HomogeneousTransformation class
 //   
-HomogeneousTransformation HomogeneousTransformation::fromDH( const double& a, const double& alpha, const double& d, const double& theta ){
+HomogeneousTransformation HomogeneousTransformation::fromDH( const double a, const double alpha, const double d, const double theta ){
   double stheta = sin( theta );
   double ctheta = cos( theta );
   double salpha = sin( alpha );
