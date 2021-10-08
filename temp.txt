@@ -1,0 +1,79 @@
+Kinematics Workshop
+
+Pose: A position and orientation w.r.t. some reference frame.
+* Euler Angles - Notice that many parameters in the Rotation Matrix representation are redundant => A minimal representation uses 3 parameters. One such minimal representation is a triplet of Euler angles, and the ZYX (aka RPY) is a popular triplet to choose.
+* In the RPY representation, we rotate about the x then y then z axes of the fixed frame. This can be computed using the premultiplication of the three rotation matrices.
+* Axis and Angle - We could represent orientation using a rotation about an axis in space. This uses four parameters: [rx ry rz] and theta. But we still end up with a singularity for null rotations!
+* Unit Quaternion - We reparameterize the axis-angle representation into a scalar and vector part. The quaternion is constrained such that the L2 norm of its parameters is 1. The transformation solves the non-uniqueness problem. The inverse of a quaternion simply negates its vector part.
+
+2.8 - Direct Kinematics
+
+A manipulator is a series of rigid bodies (links) connected by kinematic pairs or joints. A kinematic chain is considered open if there is only one sequence of links connecting the two ends of the chain.
+
+Posture - Denotes the pose of all the rigid bodies composing the chain. Each joint has some joint variable, and the goal of direct kinematics is to compute the pose of the end-effector as a function of the joint variables.
+
+A manipulator has some base frame. In choosing the end frame, do:
+* x-axis = normal to the other two
+* y-axis = sliding plane of the jaws
+* z-axis = approach vector of the gripper
+
+Back to kinematics: We consider a manipulator where n + 1 links are connected by n joints. Link 0 is fixed to the ground. Each joint is assumed to provide one DOF, corresponding to one joint variable.
+
+We will define a coordinate frame affixed to each link, 0 to n. The coordinate transformation describing the pose of Frame n w.r.t. Frame 0 is given by T0n(q) = A01(q1)A12(q2) ... A(n-1)n(qn). We can append transformations from the base frame to Frame 0 or from Frame n to the end-effector frame.
+
+All that remains is finding these A(i)(i+1) matrices as a function of each joint variable. The Denavit-Hartenberg conventions provide such rules.
+
+(see my notes from 231 tbh)
+Also copy over and compare my code there!
+
+Matrix A(i-1)i(qi) is given by:
+
+All of these are indexed with i:
+a - Distance from Oi to Oi'
+d - Coordinate of Oi' along z(i-1)
+alpha - Angle from z(i-1) to zi about xi.
+theta - Angle from x(i-1) to xi about z(i-1).
+
+My description of the transformation:
+1. Move up along z(i-1) by d.
+2. Rotate about z(i-1) by angle theta. We are now in Frame Oi'.
+3. Move along axis xi' (which is coincident with axis xi) by distance a.
+4. Rotate about xi' (AKA xi) by angle alpha. This is Frame i.
+
+Follow the steps on pg. 85 of the pdf to find the DH parameters for any manipulator.
+
+Section 2.9.7 gives the DH parameters for an anthropomorphic arm with spherical wrist
+
+Conceptually, each Link has a pose and is some rigid body. Its pose is a function of the previous link's pose as well as the preceding joint's state. The overall Manipulator should have n+1 links connected by n joints with Link 0 fixed to the ground (presumably the base frame).
+
+The Manipulator class simply stores a vector of the n links, where Link 0 is assumed to match the base frame and is thus ignored. All other Links contain a member variable Joint representing the preceding joint.
+
+class Manipulator{
+public:
+
+/* Updates the stored homogeneous transformations in each Link of the Manipulator using the current joint variables. */
+void update( void ){
+for ( Link& link : links ){
+link.updateTransform();
+}
+return;
+}
+
+/* Returns the end-effector pose for the Manipulator */
+HomogeneousTransform endEffectorPose( void ){
+
+}
+
+/* Contains the n + 1 links making up the manipulator, where all but the first include their own DH parameters and Joint information. */
+std::vector< Link > links;
+
+/* Base frame of the Manipulator, assumed to be the frame of Link 0. */
+HomogeneousTransform base_frame;
+}
+
+Assume all of the above was implemented. What do we actually want as functionalities from this setup?
+
+* Direct kinematics - Maps joint values to pose of all links.
+* Visualization - Show to arm in simulation matching real life.
+* Some sort of step function for the RRT*
+* End goal: RRT* over manipulator poses
