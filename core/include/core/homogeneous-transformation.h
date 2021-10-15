@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <Eigen/Dense>
+#include "geometry_msgs/Transform.h"
 #include "core/vector-3d.h"
 #include "core/rotation-matrix.h"
 
@@ -107,6 +108,15 @@ class HomogeneousTransformation{
       @throws     no expected throws
     */
     HomogeneousTransformation inverse( void )const;
+
+    /**
+      Return the HomogeneousTransformation as a geometry_msgs::Transform
+
+      @brief Return the HomogeneousTransformation as a geometry_msgs::Transform
+      @returns    geometry_msgs::Transform version of the transformation
+      @throws     no expected throws
+    */
+    geometry_msgs::Transform to_Transform( void )const;
 
     /**
       HomogeneousTransformation multiplication

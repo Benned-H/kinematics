@@ -40,16 +40,15 @@ class Manipulator{
       @returns      HomogeneousTransformation of the end-effector
       @throws       no expected throws
     */
-    HomogeneousTransformation endPose( void )const;
-
-  protected:
+    HomogeneousTransformation end_pose( void )const;
 
     /** Contains the n links making up the manipulator, each including their own DH parameters and Joint information */
     std::vector< Link > links;
 
     /** Contains the n + 1 poses for each frame of the manipulator, starting with Frame 0 up to Frame n */
     std::vector< HomogeneousTransformation > frames;
-
- private:
+  
+  protected:
+  private:
 
 };

@@ -43,6 +43,6 @@ void Manipulator::update( void ){
 //
 // Returns the end-effector pose for the Manipulator
 //
-HomogeneousTransformation Manipulator::endPose( void )const{
+HomogeneousTransformation Manipulator::end_pose( void )const{
   return frames.back();
 }

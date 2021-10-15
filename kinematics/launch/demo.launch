@@ -1,0 +1,3 @@
+<launch>
+  <node name="manipulator_demo" pkg="kinematics" type="manipulator_demo" />
+</launch>

@@ -79,6 +79,19 @@ RotationMatrix RotationMatrix::inverse( void )const{
 }
 
 //
+// Return the RotationMatrix as a geometry_msgs::Quaternion
+//
+geometry_msgs::Quaternion RotationMatrix::to_Quaternion( void )const{
+  // See Siciliano Eq. 2.34 and 2.35
+  geometry_msgs::Quaternion q;
+  q.x = 0.5 * sign( R(2,1) - R(1,2) ) * sqrt( R(0,0) - R(1,1) - R(2,2) + 1.0 );
+  q.y = 0.5 * sign( R(0,2) - R(2,0) ) * sqrt( R(1,1) - R(2,2) - R(0,0) + 1.0 );
+  q.z = 0.5 * sign( R(1,0) - R(0,1) ) * sqrt( R(2,2) - R(0,0) - R(1,1) + 1.0 );
+  q.w = 0.5 * sqrt( R(0,0) + R(1,1) + R(2,2) + 1.0 );
+  return q;
+}
+
+//
 // RotationMatrix std::ostream << operator
 //
 std::ostream& operator<<( std::ostream& out, const RotationMatrix& other ){

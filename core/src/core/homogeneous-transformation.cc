@@ -94,3 +94,15 @@ HomogeneousTransformation HomogeneousTransformation::inverse( void )const{
   Vector3D inverse_p = -( inverse_R * position() );
   return HomogeneousTransformation( inverse_p, inverse_R );
 }
+
+//
+// Return the HomogeneousTransformation as a geometry_msgs::Transform
+//
+geometry_msgs::Transform HomogeneousTransformation::to_Transform( void )const{
+  geometry_msgs::Transform transform;
+  transform.translation.x = T(0,3);
+  transform.translation.y = T(1,3);
+  transform.translation.z = T(2,3);
+  transform.rotation = orientation().to_Quaternion();
+  return transform;
+}

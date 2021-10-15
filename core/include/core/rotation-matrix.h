@@ -9,7 +9,9 @@
 
 #include <iostream>
 #include <Eigen/Dense>
+#include "geometry_msgs/Quaternion.h"
 #include "core/vector-3d.h"
+#include "core/common.h"
 
 class RotationMatrix{
   public:
@@ -112,6 +114,15 @@ class RotationMatrix{
       @throws       no expected throws
     */
     RotationMatrix inverse( void )const;
+
+    /**
+      Return the RotationMatrix as a geometry_msgs::Quaternion
+
+      @brief Return the RotationMatrix as a geometry_msgs::Quaternion
+      @returns    geometry_msgs::Quaternion version of the rotation matrix
+      @throws     no expected throws
+    */
+    geometry_msgs::Quaternion to_Quaternion( void )const;
 
     /**
       RotationMatrix multiplication
