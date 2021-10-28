@@ -46,13 +46,14 @@ int main( int argc, char* argv[] ){
 
   tf2_ros::TransformBroadcaster br;
   
-  ros::Rate rate( 10.0 );
+  ros::Rate rate( 1.0 );
   while ( ros::ok() ){
     
     std::stringstream frame_name;
     frame_name.str( "frame0" );
 
     // Each Link contains its own local transformation, already computed
+    std::vector< geometry_msgs::TransformStamped > transforms;
     for( int l = 0; l < arm.links.size(); l++ ){
       geometry_msgs::TransformStamped ts;
       ts.header.stamp = ros::Time::now();
@@ -62,14 +63,16 @@ int main( int argc, char* argv[] ){
       frame_name.str("");
       frame_name << "frame" << (l + 1);
       ts.child_frame_id = frame_name.str();
-      std::cout << "Broadcasting transform from " << ts.header.frame_id << " to " << ts.child_frame_id << "..." << std::endl;
 
       ts.transform = arm.links[l].transformation.to_Transform();
-      br.sendTransform( ts );
+      transforms.push_back( ts );
     }
- 
+
+    std::cout << "Broadcasting transforms..." << std::endl;
+    br.sendTransform( transforms );
+    
+    std::cout << "Waiting for duration of 1 Hz loop..." << std::endl;
     rate.sleep();
-    printf("sending\n");
   }
 
   std::cout << "End of Manipulator class demo program, spinning..." << std::endl;
