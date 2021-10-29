@@ -49,8 +49,6 @@ class Link{
 
     /** The current transformation from Frame i-1 to Frame i based on Joint i */
     HomogeneousTransformation transformation;
-
-  protected:
     
     /** The Joint preceding this Link in the kinematic chain, both numbered i */
     Joint joint;
@@ -58,6 +56,7 @@ class Link{
     /** struct containing the four DH parameters for this Link */
     dh_parameters_t params;
   
- private:
+  protected:  
+  private:
 
 };

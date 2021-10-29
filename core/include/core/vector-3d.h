@@ -125,6 +125,16 @@ class Vector3D{
     double z( void )const;
 
     /**
+      Return the vector cross product of this and another Vector3D
+
+      @brief Return the vector cross product of this and another Vector3D
+      @param[in]    rhs   other Vector3D to cross by
+      @returns      Vector3D cross product result
+      @throws       no expected throws
+    */
+    Vector3D cross( const Vector3D& rhs )const;
+
+    /**
       Vector3D unary operator- which represents negation
 
       @brief Vector3D unary operator- which represents negation
@@ -134,6 +144,34 @@ class Vector3D{
     */
     friend inline Vector3D operator-( const Vector3D& rhs ){
       return Vector3D( -rhs.v[0], -rhs.v[1], -rhs.v[2] );
+    }
+
+    /**
+      Vector3D scalar multiplication
+
+      @brief Vector3D scalar multiplication
+      @param[in]    lhs   scalar factor
+      @param[in]    rhs   Vector3D factor
+      @returns      Vector3D product result
+      @throws       no expected throws
+    */
+    friend inline Vector3D operator*( const double lhs, const Vector3D& rhs ){
+      return Vector3D( lhs * rhs.v[0], lhs * rhs.v[1], lhs * rhs.v[2] );
+    }
+
+    /**
+      Vector3D matrix multiplication with Eigen::Matrix3d
+
+      @brief Vector3D matrix multiplication with Eigen::Matrix3d
+      @param[in]    lhs   Eigen::Matrix3d factor
+      @param[in]    rhs   Vector3D factor
+      @returns      Vector3D product result
+      @throws       no expected throws
+    */
+    friend inline Vector3D operator*( const Eigen::Matrix3d& lhs, const Vector3D& rhs ){
+      return Vector3D(  lhs(0,0) * rhs.x() + lhs(0,1) * rhs.y() + lhs(0,2) * rhs.z(),
+                        lhs(1,0) * rhs.x() + lhs(1,1) * rhs.y() + lhs(1,2) * rhs.z(),
+                        lhs(2,0) * rhs.x() + lhs(2,1) * rhs.y() + lhs(2,2) * rhs.z() );
     }
 
     /**

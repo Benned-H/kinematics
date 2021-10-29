@@ -87,6 +87,13 @@ RotationMatrix HomogeneousTransformation::orientation( void )const{
 }
 
 //
+// Return the z-axis of the HomogeneousTransformation as a Vector3D
+//
+Vector3D HomogeneousTransformation::z_axis( void )const{
+  return Vector3D( T(0,2), T(1,2), T(2,2) );
+}
+
+//
 // Return the inverse of the HomogeneousTransformation
 //
 HomogeneousTransformation HomogeneousTransformation::inverse( void )const{

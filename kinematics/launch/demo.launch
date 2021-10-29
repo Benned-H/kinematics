@@ -1,6 +1,0 @@
-<launch>
-  <node pkg="tf2_ros" type="static_transform_publisher" name="world_to_frame0"
-    args="0.0 0.0 0.0 0.0 0.0 0.0 world frame0"/>
-  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find core)/rviz/tf_visualizer.rviz"/>
-  <node name="manipulator_demo" pkg="kinematics" type="kinematics-manipulator-demo" output="screen"/>
-</launch>

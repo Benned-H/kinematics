@@ -186,6 +186,7 @@ install(TARGETS ${PROJECT_NAME}
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
+  launch/tf_rviz.launch
   rviz/tf_visualizer.rviz
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

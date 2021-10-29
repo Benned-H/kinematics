@@ -92,6 +92,13 @@ double Vector3D::z( void )const{
 }
 
 //
+// Return the vector cross product of this and another Vector3D
+//
+Vector3D Vector3D::cross( const Vector3D& rhs )const{
+  return Vector3D( y()*rhs.z() - z()*rhs.y(), z()*rhs.x() - x()*rhs.z(), x()*rhs.y() - y()*rhs.x() );
+}
+
+//
 // Vector3D std::ostream << operator
 //
 std::ostream& operator<<( std::ostream& out, const Vector3D& other ){

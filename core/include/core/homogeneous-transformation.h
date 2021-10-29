@@ -101,6 +101,15 @@ class HomogeneousTransformation{
     RotationMatrix orientation( void )const;
 
     /**
+      Return the z-axis of the HomogeneousTransformation as a Vector3D
+
+      @brief Return the z-axis of the HomogeneousTransformation as a Vector3D
+      @returns    z-axis of the rotation in the transformation
+      @throws     no expected throws
+    */
+    Vector3D z_axis( void )const;
+
+    /**
       Return the inverse of the HomogeneousTransformation
 
       @brief Return the inverse of the HomogeneousTransformation

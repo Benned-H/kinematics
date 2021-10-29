@@ -46,34 +46,86 @@ Section 2.9.7 gives the DH parameters for an anthropomorphic arm with spherical 
 
 Conceptually, each Link has a pose and is some rigid body. Its pose is a function of the previous link's pose as well as the preceding joint's state. The overall Manipulator should have n+1 links connected by n joints with Link 0 fixed to the ground (presumably the base frame).
 
-The Manipulator class simply stores a vector of the n links, where Link 0 is assumed to match the base frame and is thus ignored. All other Links contain a member variable Joint representing the preceding joint.
-
-class Manipulator{
-public:
-
-/* Updates the stored homogeneous transformations in each Link of the Manipulator using the current joint variables. */
-void update( void ){
-for ( Link& link : links ){
-link.updateTransform();
-}
-return;
-}
-
-/* Returns the end-effector pose for the Manipulator */
-HomogeneousTransform endEffectorPose( void ){
-
-}
-
-/* Contains the n + 1 links making up the manipulator, where all but the first include their own DH parameters and Joint information. */
-std::vector< Link > links;
-
-/* Base frame of the Manipulator, assumed to be the frame of Link 0. */
-HomogeneousTransform base_frame;
-}
-
 Assume all of the above was implemented. What do we actually want as functionalities from this setup?
 
 * Direct kinematics - Maps joint values to pose of all links.
 * Visualization - Show to arm in simulation matching real life.
 * Some sort of step function for the RRT*
 * End goal: RRT* over manipulator poses
+
+Position error eP = pe(qd) - pe(q)
+
+eO = ne(q)*ed - nd*ee(q) - S(ed)*ee(q),
+    where e means epsilon whenever it's not a subscript,
+    and S is the skew-symmetric operator.
+% Thus we can write a function to compute eP and eO given qd and q.
+q = [ pi/4.0; pi/6.0; pi/8.0; pi/13.0; -pi/8.0; pi/7.0 ];
+qd = [ pi/3.0; pi/8.0; pi/7.0; pi/17.0; -pi/10.0; pi/12.0 ];
+e = get_error(qd, q);
+eP = cell2mat(e(1))
+eO = cell2mat(e(2))
+
+% Finally, we can compute q_dot, the rate of change of the joint angles:
+%   q_dot = J^{-1}(q) [ pd_dot + KP * eP;
+%                       omega_d + KO * eO ]
+ % We see that q_dot is a function of q, qd, pd_dot, omega_d, KP, and KO.
+pd_dot = [ 0; 0; 0 ]; omega_d = [ 0; 0; 0 ]; KP=[ 5.0,0,0;
+0, 5.0, 0;
+0, 0, 5.0 ]; KO=[ 5.0,0,0; 0, 5.0, 0;
+        0, 0, 5.0 ];
+q_dot = get_q_dot( q, qd, pd_dot, omega_d, KP, KO )
+size(q_dot)
+% This gives q_dot =
+%
+%     1.3904
+%    -0.3577
+%    -0.4926
+%    -0.6237
+%     1.0182
+%     0.5523
+
+while t < 2.0
+    % Compute new values for q, eP, eO, and q_dot
+    q = q + q_dot*dt;
+    e = get_error(qd, q);
+    q_dot = get_q_dot( q, qd, pd_dot, omega_d, KP, KO );
+    % Store the values for this new timestep
+    q_cell_array{cell_index} = q;
+    eP_cell_array{cell_index} = cell2mat(e(1));
+    eO_cell_array{cell_index} = cell2mat(e(2));
+    q_dot_cell_array{cell_index} = q_dot;
+    % Update our time and cell_index
+    t = t + dt;
+    cell_index = cell_index + 1;
+end
+% Now convert the cell arrays into matrices
+q_matrix = cell2mat(q_cell_array);
+q_size = size(q_matrix)
+eP_matrix = cell2mat(eP_cell_array);
+eP_size = size(eP_matrix)
+eO_matrix = cell2mat(eO_cell_array);
+eO_size = size(eO_matrix)
+
+function e = get_error(qd, q)
+    % Computes the position error eP and orientation error eO given the
+    % desired and actual state variables (qd and q, respectively).
+    eP = get_pe(qd) - get_pe(q);
+    Qd = get_Qe(qd);
+    nd = Qd{1};
+ed = Qd{2};
+    Qe = get_Qe(q);
+    ne = Qe{1};
+ee = Qe{2};
+    eO = ne*ed - nd*ee - S(ed)*ee;
+    e = {eP, eO};
+end
+
+function q_dot = get_q_dot(q, qd, pd_dot, omega_d, KP, KO)
+    % Returns q_dot, the rate of change of the joint angles
+    e = get_error(qd, q);
+    eP = cell2mat(e(1));
+    eO = cell2mat(e(2));
+    J = get_geometric_J(q);
+    q_dot = inv(J) * [  pd_dot + KP * eP;
+end
+omega_d + KO * eO ];

@@ -24,14 +24,14 @@ int main( int argc, char* argv[] ){
   ros::Rate timer(1); // Timer at 1Hz
   timer.sleep(); // Wait 1 second
 
-  // Configuaration 2 - Alternating angles 0 and 90
+  // Configuration 2 - Alternating angles 0 and 90
   command.angles = {0.0, 90.0, 0.0, 90.0, 0.0, 90.0, 0.0};
   command_pub.publish( command );
 
-  // Configuration 3 - All servos with inverse angles (0 or 90) as in Config 3
+  // Configuration 3 - All servos with inverse angles (0 or 90) as in Config 2
   command.angles = {90.0, 0.0, 90.0, 0.0, 90.0, 0.0, 90.0};
   command_pub.publish( command );
 
-  std::cout << "End of Arduino control demo program, spinning..." << std::endl;
+  std::cout << "End of Arduino control demo program, exiting..." << std::endl;
   return EXIT_SUCCESS;
 };
